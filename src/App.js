@@ -1,9 +1,9 @@
 import React from 'react';
-import CreateArticle from "./CreatArticle";
+import DeleteArticle from "./DeleteArticle";
 const App = () => {
   return (
     <div>
-      <CreateArticle/>
+      <DeleteArticle/>
     </div>
   );
 }
