@@ -3,7 +3,10 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Link,
 } from 'react-router-dom';
+import Nav from "react-bootstrap/Nav";
+
 
 import CreateArticle from "./pages/CreatArticle";
 import DeleteArticle from "./pages/DeleteArticle";
@@ -13,6 +16,23 @@ import NotFound from "./pages/NotFound";
 const App = () => {
   return (
     <Router>
+        <Nav>
+            <Nav.Item>
+                <Nav.Link as={Link} to="/">
+                    Accueil
+                </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link as={Link} to="/articles/create">
+                    Créer un article
+                </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link as={Link} to="/articles/delete">
+                    Supprimer un article
+                </Nav.Link>
+            </Nav.Item>
+        </Nav>
       <Switch>
           <Route exact path="/"        component={Home}/>
         <Route path="/articles/create" component={CreateArticle}/>
