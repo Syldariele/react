@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -26,16 +28,23 @@ const CreateArticle = () => {
             .then((result) => {
                 return result.json();
             })
-            .then(({ status }) => {
-                if (status === "ok") {
+            .then(({ status, extra }) => {
+                if (status === "OK") {
                     setTitle("");
                     setContent("");
                     setAuthor("");
-                    console.log(status);
+                    toast.success("L'article a bien été crée");
+                }else {
+                    toast.error(
+                        <div>
+                            Oups... Nous avons eu une erreur ! <br/>
+                            {extra}
+                        </div>
+                    );
                 }
             })
             .catch((error) => {
-                console.log(error)
+                toast.error("Oups... Nous avons eu une erreur !");
             });
     };
 
