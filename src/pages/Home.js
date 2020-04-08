@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 
 import { formatDate } from '../utils/date';
 
@@ -33,7 +34,7 @@ const Home = () => {
             <Card key={id}>
                 <Card.Header>
                     <Card.Title as="h5">
-                        {title}
+                        <Link to={"article/" + id }>{title}</Link>
                     </Card.Title>
                 </Card.Header>
                     <Card.Body>
