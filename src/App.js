@@ -4,6 +4,7 @@ import {
     Switch,
     Route,
 } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import Navigation from './components/Navigation';
 
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/comments/delete" component={DeleteComment}/>
         <Route path="*"                  component={NotFound}/>
       </Switch>
+        <ToastContainer/>
     </Router>
   );
 }
