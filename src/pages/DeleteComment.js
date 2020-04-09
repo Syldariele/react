@@ -3,14 +3,44 @@ import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import {toast} from "react-toastify";
 
 const DeleteComment = () => {
     const [id, setId] = useState("");
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("Id : ", id);
-    }
+
+        fetch('http://localhost:3001/api/comments/delete', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                id,
+            }),
+        })
+            .then((result) => {
+                return result.json();
+            })
+            .then(({ status, extra }) => {
+                if (status === "OK") {
+                    setId("");
+                    toast.success("Le commentaire a bien été supprimé");
+                }else {
+                    toast.error(
+                        <div>
+                            Oups... Nous avons eu une erreur ! <br/>
+                            {extra}
+                        </div>
+                    );
+                }
+            })
+            .catch((error) => {
+                toast.error("Oups... Nous avons eu une erreur !");
+            });
+    };
 
     const handleChange = (event) => {
 
@@ -20,7 +50,7 @@ const DeleteComment = () => {
                 break;
             // no default
         }
-    }
+    };
 
     return (
         <Container>
@@ -39,6 +69,6 @@ const DeleteComment = () => {
             </Form>
         </Container>
     );
-}
+};
 
 export default DeleteComment;
