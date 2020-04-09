@@ -9,7 +9,7 @@ import {toast} from "react-toastify";
 const CreateComment = () => {
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
-    const [idArticle, setIdArticle] = useState("");
+    const [article_id, setArticle_id] = useState("");
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -21,9 +21,9 @@ const CreateComment = () => {
                 'Accept': 'application/json',
             },
             body: JSON.stringify({
-                idArticle,
                 content,
                 author,
+                article_id,
             }),
         })
             .then((result) => {
@@ -31,9 +31,9 @@ const CreateComment = () => {
             })
             .then(({ status, extra }) => {
                 if (status === "OK") {
-                    setIdArticle("");
                     setContent("");
                     setAuthor("");
+                    setArticle_id("");
                     toast.success("Le commentaire a bien été crée");
                 }else {
                     toast.error(
@@ -63,7 +63,7 @@ const CreateComment = () => {
                 setAuthor(event.target.value);
                 break;
             case "idArticle":
-                setIdArticle(event.target.value);
+                setArticle_id(event.target.value);
                 break;
             // no default
         }
@@ -96,7 +96,7 @@ const CreateComment = () => {
                         type="number"
                         name="idArticle"
                         onChange={handleChange}
-                        value={idArticle}
+                        value={article_id}
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit">Créer un commentaire</Button>
