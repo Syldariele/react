@@ -3,12 +3,14 @@ import {toast} from "react-toastify";
 import Card from "react-bootstrap/Card";
 import {formatDate} from "../utils/date";
 import Container from "react-bootstrap/Container";
+import {ListGroup} from "react-bootstrap";
+
 
 const ViewComments = ({ article_id }) => {
     const [ comments, setComments] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/comments?id=' + article_id)
+        fetch('http://localhost:3001/api/comments?article_id=' + article_id)
             .then((result) => {
                 return result.json();
             })
@@ -26,9 +28,9 @@ const ViewComments = ({ article_id }) => {
     }, [article_id]);
 
     const renderedComments = comments.map((comment) => {
-        const { article_id, content, created_at, authorFirstname, authorLastname } = comment;
+        const { id, content, created_at, authorFirstname, authorLastname } = comment;
         return (
-            <Card key={article_id}>
+            <Card key={id}>
                 <Card.Body>
                     <Card.Text>
                         {content}
@@ -48,9 +50,9 @@ const ViewComments = ({ article_id }) => {
     return(
         <Container>
             <h5>Derniers commentaires</h5>
-            <div>
+            <ListGroup>
                 {renderedComments}
-            </div>
+            </ListGroup>
         </Container>
     );
 };
