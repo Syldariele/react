@@ -13,7 +13,6 @@ import CreateArticle from "./pages/CreatArticle";
 import DeleteArticle from "./pages/DeleteArticle";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import CreateComment from "./pages/CreateComment";
 import DeleteComment from "./pages/DeleteComment";
 import ViewArticle from "./pages/ViewArticle";
 
@@ -26,7 +25,6 @@ const App = () => {
                 <Route path="/articles/create" component={CreateArticle}/>
                 <Route path="/articles/delete" component={DeleteArticle}/>
                 <Route path="/article/:id"     component={ViewArticle}/>
-                <Route path="/comments/create" component={CreateComment}/>
                 <Route path="/comments/delete" component={DeleteComment}/>
                 <Route path="*"                component={NotFound}/>
             </Switch>

@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import Card from "react-bootstrap/Card";
 import {formatDate} from "../utils/date";
-import Container from "react-bootstrap/Container";
 import {ListGroup} from "react-bootstrap";
+import CreateComment from "../components/CreateComment";
 
 
 const ViewComments = ({ article_id }) => {
@@ -16,7 +16,7 @@ const ViewComments = ({ article_id }) => {
             })
             .then(({ status, comments}) => {
                 if (status === "OK") {
-                    setComments(comments);
+                    setComments(comments.reverse());
                 } else {
                     toast.error("Oups... Une erreur est survenue !");
                 }
@@ -26,6 +26,12 @@ const ViewComments = ({ article_id }) => {
                 console.log(error);
             })
     }, [article_id]);
+
+    const handleCreate = (comment) => {
+      const newComments = [ ...comments ];
+      newComments.push(comment);
+      setComments(newComments);
+    };
 
     const renderedComments = comments.map((comment) => {
         const { id, content, created_at, authorFirstname, authorLastname } = comment;
@@ -40,7 +46,7 @@ const ViewComments = ({ article_id }) => {
                     <small className="text-muted">
                         crée le&nbsp;
                         { formatDate(created_at)}&nbsp;
-                        par {authorFirstname}&nbsp;{authorLastname.substring(0, 1)}.
+                        par {authorFirstname}&nbsp;{authorLastname}
                     </small>
                 </Card.Footer>
             </Card>
@@ -48,12 +54,14 @@ const ViewComments = ({ article_id }) => {
     });
 
     return(
-        <Container>
-            <h5>Derniers commentaires</h5>
             <ListGroup>
                 {renderedComments}
+                <ListGroup.Item>
+                    <CreateComment article_id={article_id}
+                                   onCreate={handleCreate}
+                    />
+                </ListGroup.Item>
             </ListGroup>
-        </Container>
     );
 };
 

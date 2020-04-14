@@ -36,7 +36,7 @@ const ViewArticle = ({ match }) => {
                 {article.content}
             </p>
             <p>
-                posté le {formatDate(new Date())}<br/>
+                posté le {formatDate(article.created_at)}<br/>
                 par {article.authorFirstname} {article.authorLastname}
             </p>
            <ViewComments article_id={id}/>

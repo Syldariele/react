@@ -6,10 +6,9 @@ import Button from 'react-bootstrap/Button';
 import {toast} from "react-toastify";
 
 
-const CreateComment = () => {
+const CreateComment = ({ article_id, onCreate }) => {
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
-    const [article_id, setArticle_id] = useState("");
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -29,12 +28,18 @@ const CreateComment = () => {
             .then((result) => {
                 return result.json();
             })
-            .then(({ status, extra }) => {
+            .then(({ status, extra, result }) => {
                 if (status === "OK") {
+                    onCreate({
+                        id: result.commentId,
+                        content,
+                        article_id,
+                        created_at: new Date(),
+                        authorFirstname: "Berengere",
+                        authorLastname: "Grosset"
+                    });
                     setContent("");
                     setAuthor("");
-                    setArticle_id("");
-                    toast.success("Le commentaire a bien été crée");
                 }else {
                     toast.error(
                         <div>
@@ -51,19 +56,12 @@ const CreateComment = () => {
 
 
     const handleChange = (event) => {
-        console.log("Target Name :", event.target.name);
-        console.log("Target Value :", event.target.value);
-
         switch (event.target.name) {
-
             case "content":
                 setContent(event.target.value);
                 break;
             case "author":
                 setAuthor(event.target.value);
-                break;
-            case "idArticle":
-                setArticle_id(event.target.value);
                 break;
             // no default
         }
@@ -89,15 +87,6 @@ const CreateComment = () => {
                         onChange={handleChange}
                         value={author}
                      />
-                </Form.Group>
-                <Form.Group controlId="comment.idArticle">
-                    <Form.Label>Id de l'article</Form.Label>
-                    <Form.Control
-                        type="number"
-                        name="idArticle"
-                        onChange={handleChange}
-                        value={article_id}
-                    />
                 </Form.Group>
                 <Button variant="primary" type="submit">Créer un commentaire</Button>
             </Form>
