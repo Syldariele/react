@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import {toast} from "react-toastify";
 
 const Signin = () => {
     const [ email, setEmail ] = useState("");
@@ -24,6 +25,38 @@ const Signin = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        fetch("http://localhost:3001/api/login", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        })
+            .then((result) => {
+                return result.json();
+            })
+            .then(({ status, extra }) => {
+                if (status === "OK") {
+                    toast.success("tout semble s'être bien passé");
+                } else {
+                    toast.error(
+                        <div>
+                            Oups... Nous avons eu une erreur ! <br/>
+                            {extra}
+                        </div>
+                    );
+                }
+            })
+            .catch((error) => {
+                toast.error("oups... Nous avons eu une erreur !");
+                console.log(error);
+            })
+
     };
     return(
         <Container>
