@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-
+import { useCookies } from 'react-cookie';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -8,8 +8,7 @@ import Button from 'react-bootstrap/Button';
 const CreateArticle = () => {
     const [ title, setTitle ] = useState("");
     const [ content, setContent ] = useState("");
-    const [ author, setAuthor ] = useState("");
-
+    const [ cookies, setCookie ] = useCookies();
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -22,7 +21,7 @@ const CreateArticle = () => {
             body: JSON.stringify({
                 title,
                 content,
-                author,
+                author: cookies.user.id,
             }),
         })
             .then((result) => {
@@ -32,7 +31,6 @@ const CreateArticle = () => {
                 if (status === "OK") {
                     setTitle("");
                     setContent("");
-                    setAuthor("");
                     toast.success("L'article a bien été crée");
                 }else {
                     toast.error(
@@ -65,12 +63,9 @@ const CreateArticle = () => {
         case "content":
             setContent(event.target.value);
             break;
-        case "author":
-            setAuthor(event.target.value);
-            break;
             //no default
         }
-    }
+    };
 
     return(
         <Container>
@@ -92,15 +87,6 @@ const CreateArticle = () => {
                         onChange={handleChange}
                         value={content}
                     />
-                </Form.Group>
-                <Form.Group controlId="article.author">
-                    <Form.Label>Id de l'auteur</Form.Label>
-                    <Form.Control
-                        type="number"
-                        name="author"
-                        onChange={handleChange}
-                        value={author}
-                     />
                 </Form.Group>
                  <Button  variant="primary" type="submit">Valider</Button>
             </Form>

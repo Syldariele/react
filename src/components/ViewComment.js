@@ -3,10 +3,13 @@ import { formatDate } from "../utils/date";
 import { ListGroup } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import { FaTrash } from 'react-icons/fa';
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
+import { useCookies } from 'react-cookie';
 
 const ViewComment = ({ comment, onDelete }) => {
-    const { id, content, created_at, authorFirstname, authorLastname } = comment;
+    const { id, content, created_at, authorId, authorFirstname, authorLastname } = comment;
+
+    const [ cookies, setCookie ] = useCookies();
 
     const handleClick = () => {
         fetch('http://localhost:3001/api/comments/delete', {
@@ -39,15 +42,25 @@ const ViewComment = ({ comment, onDelete }) => {
                 toast.error("Oups... Nous avons eu une erreur !");
             });
     };
-    return (
-        <ListGroup.Item>
-            <p>
+
+    const renderTrashButton = () => {
+        const user = cookies.user || {};
+        if (user.id === authorId) {
+            return (
                 <Button
                     variant="outline-danger"
                     onClick={handleClick}
                 >
                     <FaTrash/>
                 </Button>
+            )
+        }
+
+    };
+    return (
+        <ListGroup.Item>
+            <p>
+                {renderTrashButton()}
                 &nbsp;
                 {content}
             </p>
